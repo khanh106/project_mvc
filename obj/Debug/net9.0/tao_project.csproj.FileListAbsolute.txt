@@ -454,3 +454,4 @@ C:\tự học\mvc\tao_project\bin\Debug\net9.0\runtimes\win-x64\native\sni.dll
 C:\tự học\mvc\tao_project\bin\Debug\net9.0\runtimes\win-x86\native\sni.dll
 C:\tự học\mvc\tao_project\bin\Debug\net9.0\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
 C:\tự học\mvc\tao_project\bin\Debug\net9.0\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
+C:\tự học\mvc\tao_project\obj\Debug\net9.0\tao_project.sourcelink.json
