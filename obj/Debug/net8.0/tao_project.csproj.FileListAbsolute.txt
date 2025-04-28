@@ -1,0 +1,8 @@
+C:\tự học\mvc\tao_project\obj\Debug\net8.0\tao_project.csproj.AssemblyReference.cache
+C:\tự học\mvc\tao_project\obj\Debug\net8.0\tao_project.GeneratedMSBuildEditorConfig.editorconfig
+C:\tự học\mvc\tao_project\obj\Debug\net8.0\tao_project.AssemblyInfoInputs.cache
+C:\tự học\mvc\tao_project\obj\Debug\net8.0\tao_project.AssemblyInfo.cs
+C:\tự học\mvc\tao_project\obj\Debug\net8.0\tao_project.csproj.CoreCompileInputs.cache
+C:\tự học\mvc\tao_project\obj\Debug\net8.0\tao_project.MvcApplicationPartsAssemblyInfo.cache
+C:\tự học\mvc\tao_project\obj\Debug\net8.0\tao_project.RazorAssemblyInfo.cache
+C:\tự học\mvc\tao_project\obj\Debug\net8.0\tao_project.RazorAssemblyInfo.cs

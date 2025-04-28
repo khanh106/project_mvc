@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\tao_project.props" />
+</Project>

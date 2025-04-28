@@ -1,0 +1,44 @@
+@model IEnumerable<tao_project.Models.Person>
+@{
+    ViewData["Title"] = "Index";
+}
+@* @* @using X.PagedList;
+@using X.PagedList.Mvc.Core;  *@
+
+@* @Html.PagedListPager((IPagedList) Model, page => Url.Action("Index", new {page = page}),
+ new X.PagedList.Mvc.Core.PagedListRenderOptions { LiElementClasses = new string[] {"page-item"}, 
+ PageClasses = new string[] { "page-link" }}) *@
+
+<h1>Index</h1>
+<p>
+    <a asp-action="Create">Create New</a>
+    <a class="btn btn-success" asp-action="Download">Download</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Fullname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fullname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+</table>
