@@ -5,6 +5,7 @@ namespace tao_project.Models
 {
     public class ApplicationUser:IdentityUser
     {
-        public string? Fullname { get; set; }
+        [PersonalData]
+        public string FullName { get; set; }
     }
 }

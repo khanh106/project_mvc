@@ -1,0 +1,36 @@
+@using Microsoft.AspNetCore.Identity
+@using tao_project.Models.ViewModels
+@model IEnumerable<tao_project.Models.ViewModels.UserWithRoleVM>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>Roles</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var userWithRoles in Model)
+        {
+            <tr>
+                <td>@userWithRoles.User.UserName</td>
+                <td>
+                    @foreach (var role in userWithRoles.Roles)
+                    {
+                        <span>@role</span>
+                        <br />
+                    }
+                </td>
+                <td>
+                    <a asp-controller="Account" 
+                       asp-action="AssignRole" 
+                       asp-route-userId="@userWithRoles.User.Id"
+                       class="btn btn-sm btn-primary">
+                        Assign Role
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

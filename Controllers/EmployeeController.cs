@@ -2,7 +2,7 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using tao_project.Models;
 
- namespace Employee.Controllers
+ namespace tao_project.Controllers
  {
      public class EmployeeController : Controller
      {

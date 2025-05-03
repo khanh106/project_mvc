@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("tao_project")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+848e6a7f2c2811aa9ff86aacb75908c59454d34b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ae67e6d57d400b824279196669ac18ba2e50ac2a")]
 [assembly: System.Reflection.AssemblyProductAttribute("tao_project")]
 [assembly: System.Reflection.AssemblyTitleAttribute("tao_project")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

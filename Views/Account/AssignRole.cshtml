@@ -1,0 +1,32 @@
+@using tao_project.Models.ViewModels
+@model tao_project.Models.ViewModels.AssignRoleVM
+
+<h2>Assign Role</h2>
+<hr />
+
+<form asp-action="AssignRole" method="post">
+    @if (Model.AllRoles?.Any() == true)
+    {
+        @foreach (var role in Model.AllRoles)
+        {
+            <div class="form-check">
+                <input class="form-check-input" 
+                       type="checkbox" 
+                       id="@role.Id" 
+                       name="SelectedRoles" 
+                       value="@role.Name"
+                       @(Model.SelectedRoles?.Contains(role.Name) == true ? "checked" : "") />
+                <label class="form-check-label" for="@role.Id">
+                    @role.Name
+                </label>
+            </div>
+        }
+    }
+    else
+    {
+        <p class="text-muted">No roles available</p>
+    }
+    
+    <input type="hidden" name="UserId" value="@Model.UserId" />
+    <button type="submit" class="btn btn-primary mt-3">Assign Roles</button>
+</form>

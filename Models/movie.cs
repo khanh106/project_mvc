@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace movie.Models;
+namespace tao_project.Models;
 
 public class Movie{
     public int ID { get; set; }

@@ -8,7 +8,9 @@
 
   <ItemGroup>
     <!-- Thêm package chính của Entity Framework Core -->
+    <PackageReference Include="Bogus" Version="35.6.3" />
     <PackageReference Include="EPPlus" Version="7.2.0" />
+    <PackageReference Include="MailKit" Version="4.12.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="9.0.4" />
     

@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Encodings.Web;
+using tao_project.Models;
 
-namespace  MvcMovie.Controllers
+namespace  tao_project.Controllers
 {
     public class HelloWorldController : Controller
     {
