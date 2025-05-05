@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using tao_project.Data;
 using tao_project.Models.Entities;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace tao_project.Controllers
-{
+{   [Authorize(Policy="PolicyEmployee")]
     public class MemberUnitsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -44,6 +46,7 @@ namespace tao_project.Controllers
         }
 
         // GET: MemberUnits/Create
+        [Authorize(Policy = "PolicyAdmin")]
         public IActionResult Create()
         {
             return View();
@@ -153,5 +156,6 @@ namespace tao_project.Controllers
         {
             return _context.MemberUnits.Any(e => e.MemberUnitId == id);
         }
+
     }
 }

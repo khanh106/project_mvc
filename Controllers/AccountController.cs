@@ -3,9 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using tao_project.Models;
 using tao_project.Models.ViewModels;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+using tao_project.Models.Process;
 
 namespace tao_project.Controllers
 {
+    
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -18,7 +22,8 @@ namespace tao_project.Controllers
             _userManager = userManager;
             _roleManager = roleManager;
         }
-
+        [Authorize(Policy = "PolicyByPhoneNumber")]
+        [Authorize(Policy=nameof(SystemPermissions.AccountView))]
         public async Task<IActionResult> Index()
         {
             var users = await _userManager.Users.ToListAsync();
@@ -35,7 +40,7 @@ namespace tao_project.Controllers
             }
             return View(usersWithRoles);
         }
-
+        [Authorize(Policy=nameof(SystemPermissions.AssignRole))]
         public async Task<IActionResult> AssignRole(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
@@ -101,7 +106,99 @@ namespace tao_project.Controllers
 
             return View(model);
         }
+
+
+        //action Addclaim
+    [Authorize(Policy = "PolicyByPhoneNumber")]
+    public async Task<IActionResult> AddClaim(string userId)
+    {
+        var user = await _userManager.FindByIdAsync(userId);
+        var userClaims = await _userManager.GetClaimsAsync(user);
+        var model = new UserClaimVM(userId, user.UserName, userClaims.ToList());
+        return View(model);
     }
+
+   [HttpPost]
+   public async Task<IActionResult> AddClaim(string userId, string claimType, string claimValue)
+   {
+    var user = await _userManager.FindByIdAsync(userId);
+    var result = await _userManager.AddClaimAsync(user, new Claim(claimType, claimValue));
+    
+    if (result.Succeeded)
+    {
+        return RedirectToAction("AddClaim", new { userId });
+    }
+    
+    return View();
+    }
+
+//action AddPhoneNumber
+[Authorize]
+[HttpGet]
+public async Task<IActionResult> UpdatePhoneNumber()
+{
+   
+    var user = await _userManager.GetUserAsync(User);
+    
+    if (user == null)
+    {
+        return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+    }
+
+    var model = new UpdatePhoneNumberViewModel
+    {
+        PhoneNumber = user.PhoneNumber
+    };
+
+    return View(model);
+}
+
+[HttpGet]
+public IActionResult Profile()
+{
+    return View();
+}
+
+
+
+[Authorize]
+[HttpPost]
+[ValidateAntiForgeryToken]
+public async Task<IActionResult> UpdatePhoneNumber(UpdatePhoneNumberViewModel model)
+{
+    if (!ModelState.IsValid)
+    {
+        return View(model);
+    }
+
+    // Lấy user hiện tại
+    var user = await _userManager.GetUserAsync(User);
+    if (user == null)
+    {
+        return NotFound("Không tìm thấy người dùng.");
+    }
+
+    // Cập nhật SỐ ĐIỆN THOẠI vào thuộc tính PhoneNumber có sẵn
+    user.PhoneNumber = model.PhoneNumber; // Gán giá trị vào thuộc tính chuẩn
+
+    // Cách 1: Dùng SetPhoneNumberAsync (chuyên biệt cho phone number)
+    var result = await _userManager.SetPhoneNumberAsync(user, model.PhoneNumber);
+
+    // Hoặc Cách 2: Dùng UpdateAsync (cập nhật mọi thông tin user)
+    // var result = await _userManager.UpdateAsync(user);
+
+    if (!result.Succeeded)
+    {
+        foreach (var error in result.Errors)
+        {
+            ModelState.AddModelError(string.Empty, error.Description);
+        }
+        return View(model);
+    }
+
+    return RedirectToAction("Profile");
+}
+}
 
   
 }

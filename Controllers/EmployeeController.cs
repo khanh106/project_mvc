@@ -10,7 +10,6 @@ using tao_project.Models;
          {
              return View();
          }
- 
          public IActionResult add_employee()
          {
              return View();

@@ -38,6 +38,12 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 .AddDefaultTokenProviders()
 .AddDefaultUI();
 
+// Cấu hình Cookie để cập nhật role ngay lập tức
+builder.Services.Configure<SecurityStampValidatorOptions>(options =>
+{
+    options.ValidationInterval = TimeSpan.Zero;
+});
+
 // Cấu hình IdentityOptions
 builder.Services.Configure<IdentityOptions>(options =>
 {
@@ -81,6 +87,20 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 builder.Services.AddTransient<EmployeeSeeder>();
 
+builder.Services.AddAuthorization(options => 
+{
+    options.AddPolicy("Role", policy => policy.RequireClaim("Role", "AdminOnly"));
+    options.AddPolicy("Permission", policy => policy.RequireClaim("Role", "EmployeeOnly"));
+    options.AddPolicy("PolicyAdmin", policy =>policy.RequireRole("Admin"));
+    options.AddPolicy("PolicyEmployee", policy => policy.RequireRole("Employee"));
+    options.AddPolicy("PolicyByPhoneNumber", policy => policy.Requirements.Add(new PolicyByPhoneNumberRequirement()));
+    foreach (var permission in Enum.GetValues(typeof(SystemPermissions)).Cast<SystemPermissions>()) 
+     {
+         options.AddPolicy(permission.ToString(), 
+          policy => policy.RequireClaim("Permission", permission.ToString()));
+     }     
+});
+builder.Services.AddSingleton<IAuthorizationHandler, PolicyByPhoneNumberHandler>();
 var app = builder.Build();
 
 // Cấu hình pipeline
@@ -122,3 +142,27 @@ app.MapControllerRoute(
 app.MapRazorPages();
 
 app.Run();
+
+//tạo file seed dữ liệu
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        // Khởi tạo role "Admin"
+        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+        if (!await roleManager.RoleExistsAsync("Admin"))
+        {
+            await roleManager.CreateAsync(new IdentityRole("Admin"));
+        }
+
+        // Seed dữ liệu
+        var seeder = services.GetRequiredService<EmployeeSeeder>();
+        seeder.SeedEmployees(1000);
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "Seed data failed.");
+    }
+}
