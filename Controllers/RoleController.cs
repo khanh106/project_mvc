@@ -4,9 +4,12 @@ using Microsoft.EntityFrameworkCore;
 using tao_project.Models.ViewModels;
 using System.Security.Claims;
 using tao_project.Models.Process;
+using Microsoft.AspNetCore.Authorization;
+
 
 
 namespace tao_project.Controllers{
+[Authorize(Roles = "Admin")]
 public class RoleController : Controller
 {
     private readonly RoleManager<IdentityRole> _roleManager;
@@ -77,27 +80,52 @@ public async Task<IActionResult> Edit(string id, string newName)
     return RedirectToAction("Index");
 }
 // action delete role
-[HttpPost]
+
+// GET: Delete (hiển thị trang xác nhận xóa)
+[Authorize(Roles = "Admin")]
 public async Task<IActionResult> Delete(string id)
+{
+    if (string.IsNullOrEmpty(id))
+    {
+        return BadRequest();
+    }
+
+    var role = await _roleManager.FindByIdAsync(id);
+    if (role == null)
+    {
+        return NotFound();
+    }
+
+    return View(role); // trả về model cho view xác nhận
+}
+// POST: Delete (thực sự xóa)
+[HttpPost, ActionName("Delete")]
+[ValidateAntiForgeryToken]
+public async Task<IActionResult> DeleteConfirmed(string id)
 {
     var role = await _roleManager.FindByIdAsync(id);
     if (role == null)
     {
         return NotFound();
     }
-    
+
+    // Ngăn xóa role quan trọng
+    if (role.Name == "Admin")
+    {
+        TempData["Error"] = "Không thể xóa role Admin mặc định.";
+        return RedirectToAction("Index");
+    }
+
     var result = await _roleManager.DeleteAsync(role);
-    
+
     if (!result.Succeeded)
     {
-        foreach (var error in result.Errors)
-        {
-            ModelState.AddModelError(string.Empty, error.Description);
-        }
-        return View(role);
+        TempData["Error"] = string.Join(", ", result.Errors.Select(e => e.Description));
+        return RedirectToAction("Index");
     }
-    
-    return RedirectToAction("Index");   
+
+    TempData["Success"] = "Xóa role thành công.";
+    return RedirectToAction("Index");
 }
 
     public async Task<IActionResult> Index()

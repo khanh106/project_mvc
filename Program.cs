@@ -55,12 +55,12 @@ builder.Services.Configure<IdentityOptions>(options =>
     // Cấu hình Password
     options.Password.RequireDigit = true;
     options.Password.RequiredLength = 8;
-    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireNonAlphanumeric = true;
     options.Password.RequireUppercase = true;
     options.Password.RequireLowercase = false;
     
     // Cấu hình SignIn
-    options.SignIn.RequireConfirmedEmail = false;
+    options.SignIn.RequireConfirmedEmail = true;
     options.SignIn.RequireConfirmedPhoneNumber = false;
     options.SignIn.RequireConfirmedAccount = true;
     
